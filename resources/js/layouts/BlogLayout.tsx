@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 export default function BlogLayout({ children }: PropsWithChildren) {
     const { auth } = usePage().props as any;
