@@ -49,7 +49,14 @@ class PostController extends Controller
          * - 'category' : the category the post belongs to
          * - 'comments.user' : all comments, and for each comment, the user who wrote it
          */
-        $post->load(['user', 'category', 'comments.user']);
+        $post->load([
+            'user', 
+            'category', 
+            'comments' => function ($query) {
+                $query->where('is_approved', true)
+                ->whit('user')->latest();
+            }
+        ]);
 
         
         return Inertia::render('Posts/Show', [
