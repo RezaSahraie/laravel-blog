@@ -54,7 +54,7 @@ class PostController extends Controller
             'category', 
             'comments' => function ($query) {
                 $query->where('is_approved', true)
-                ->whit('user')->latest();
+                ->with('user')->latest();
             }
         ]);
 
