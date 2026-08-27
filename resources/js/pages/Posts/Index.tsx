@@ -49,14 +49,17 @@ export default function Index({ posts }: Props) {
                         Articles
                     </h1>
                     <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-                        Thoughts on Laravel, React, Docker and building modern applications.
+                        Thoughts on Laravel, React, Docker and building modern
+                        applications.
                     </p>
                 </div>
 
                 {/* Posts Grid */}
                 {posts.data.length === 0 ? (
                     <div className="rounded-2xl border border-dashed border-zinc-300 py-20 text-center dark:border-zinc-700">
-                        <p className="text-zinc-500">No articles published yet.</p>
+                        <p className="text-zinc-500">
+                            No articles published yet.
+                        </p>
                     </div>
                 ) : (
                     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -73,17 +76,22 @@ export default function Index({ posts }: Props) {
                                         </span>
                                         <time className="text-zinc-500 dark:text-zinc-400">
                                             {post.published_at
-                                                ? new Date(post.published_at).toLocaleDateString('en-US', {
-                                                      month: 'short',
-                                                      day: 'numeric',
-                                                      year: 'numeric',
-                                                  })
+                                                ? new Date(
+                                                      post.published_at,
+                                                  ).toLocaleDateString(
+                                                      'en-US',
+                                                      {
+                                                          month: 'short',
+                                                          day: 'numeric',
+                                                          year: 'numeric',
+                                                      },
+                                                  )
                                                 : 'Draft'}
                                         </time>
                                     </div>
 
                                     {/* Title */}
-                                    <h2 className="text-xl font-semibold leading-snug tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                    <h2 className="text-xl leading-snug font-semibold tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
                                         <Link href={`/posts/${post.slug}`}>
                                             {post.title}
                                         </Link>

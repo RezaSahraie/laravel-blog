@@ -9,7 +9,10 @@ export default function BlogLayout({ children }: PropsWithChildren) {
             {/* Header */}
             <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
                 <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-                    <Link href="/posts" className="text-lg font-semibold tracking-tight">
+                    <Link
+                        href="/posts"
+                        className="text-lg font-semibold tracking-tight"
+                    >
                         Blog
                     </Link>
 

@@ -38,11 +38,14 @@ export default function Show({ post }: Props) {
                     <span>·</span>
                     <time>
                         {post.published_at
-                            ? new Date(post.published_at).toLocaleDateString('en-US', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                              })
+                            ? new Date(post.published_at).toLocaleDateString(
+                                  'en-US',
+                                  {
+                                      year: 'numeric',
+                                      month: 'long',
+                                      day: 'numeric',
+                                  },
+                              )
                             : 'Draft'}
                     </time>
                 </div>
@@ -59,7 +62,9 @@ export default function Show({ post }: Props) {
                     </div>
                     <div>
                         <p className="font-medium">{post.user.name}</p>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400">Author</p>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            Author
+                        </p>
                     </div>
                 </div>
 
@@ -76,7 +81,7 @@ export default function Show({ post }: Props) {
 
                 {/* Content */}
                 <div
-                    className="prose prose-zinc mt-12 max-w-none dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400"
+                    className="prose prose-zinc dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 mt-12 max-w-none"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
@@ -100,10 +105,13 @@ export default function Show({ post }: Props) {
                                     <div>
                                         <div className="flex items-center gap-2">
                                             <span className="font-medium">
-                                                {comment.user?.name ?? 'Anonymous'}
+                                                {comment.user?.name ??
+                                                    'Anonymous'}
                                             </span>
                                             <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                                                {new Date(comment.created_at).toLocaleDateString()}
+                                                {new Date(
+                                                    comment.created_at,
+                                                ).toLocaleDateString()}
                                             </span>
                                         </div>
                                         <p className="mt-1 text-zinc-700 dark:text-zinc-300">
