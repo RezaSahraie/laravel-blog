@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import BlogLayout from '@/layouts/BlogLayout';
 
 interface Props {
     post: {
@@ -14,7 +15,7 @@ interface Props {
         comments: Array<{
             id: number;
             body: string;
-            user: { id: number; name: string };
+            user: { id: number; name: string } | null;
             created_at: string;
         }>;
     };
@@ -22,84 +23,109 @@ interface Props {
 
 export default function Show({ post }: Props) {
     return (
-        <>
+        <BlogLayout>
             <Head title={post.title} />
 
-            <div className="min-h-screen bg-[#0a0a0b]">
+            <article className="mx-auto max-w-3xl px-6 py-16">
+                {/* Meta */}
+                <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+                    <Link
+                        href="/posts"
+                        className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                    >
+                        {post.category.name}
+                    </Link>
+                    <span>·</span>
+                    <time>
+                        {post.published_at
+                            ? new Date(post.published_at).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                              })
+                            : 'Draft'}
+                    </time>
+                </div>
+
+                {/* Title */}
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                    {post.title}
+                </h1>
+
+                {/* Author */}
+                <div className="mt-8 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-sm font-medium text-white dark:bg-white dark:text-zinc-900">
+                        {post.user.name.charAt(0)}
+                    </div>
+                    <div>
+                        <p className="font-medium">{post.user.name}</p>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400">Author</p>
+                    </div>
+                </div>
+
                 {/* Cover Image */}
                 {post.cover_image && (
-                    <div className="relative h-96 w-full overflow-hidden">
+                    <div className="mt-10 overflow-hidden rounded-2xl">
                         <img
                             src={post.cover_image}
                             alt={post.title}
-                            className="absolute inset-0 h-full w-full object-cover"
+                            className="h-auto w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-transparent" />
                     </div>
                 )}
 
-                <div className="mx-auto max-w-5xl px-6 py-16">
-                    {/* Category & Date */}
-                    <div className="mb-6 flex items-center gap-4 text-sm text-zinc-400">
-                        <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
-                            {post.category.name}
-                        </span>
-                        <span>
-                            {post.published_at
-                                ? new Date(post.published_at).toLocaleDateString('en-US', {
-                                      month: 'long',
-                                      day: 'numeric',
-                                      year: 'numeric',
-                                  })
-                                : 'Draft'}
-                        </span>
-                    </div>
+                {/* Content */}
+                <div
+                    className="prose prose-zinc mt-12 max-w-none dark:prose-invert prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                />
 
-                    {/* Title */}
-                    <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                        {post.title}
-                    </h1>
+                {/* Comments */}
+                <section className="mt-20 border-t border-zinc-200 pt-12 dark:border-zinc-800">
+                    <h2 className="text-xl font-semibold">
+                        Comments ({post.comments.length})
+                    </h2>
 
-                    {/* Author */}
-                    <div className="mt-6 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 text-sm font-semibold text-white">
-                            {post.user.name.charAt(0)}
-                        </div>
-                        <span className="font-medium text-zinc-300">{post.user.name}</span>
-                    </div>
-
-                    {/* Content */}
-                    <div
-                        className="prose prose-invert prose-lg mt-10 max-w-none space-y-6"
-                        dangerouslySetInnerHTML={{ __html: post.content }}
-                    />
-
-                    {/* Comments */}
-                    <div className="mt-20">
-                        <h3 className="text-lg font-semibold text-white">Comments</h3>
-
-                        {post.comments.length === 0 ? (
-                            <p className="mt-4 text-zinc-500">No comments yet.</p>
-                        ) : (
-                            <div className="mt-6 space-y-8">
-                                {post.comments.map((comment) => (
-                                    <div key={comment.id} className="border-l border-violet-500/30 pl-6">
-                                        <div className="flex items-center gap-3">
-                                            <div className="text-sm font-medium text-violet-300">
-                                                {comment.user.name}
-                                            </div>
-                                            <div className="text-xs text-zinc-500">
-                                                {new Date(comment.created_at).toLocaleDateString()}
-                                            </div>
-                                        </div>
-                                        <p className="mt-2 text-zinc-300">{comment.body}</p>
+                    {post.comments.length === 0 ? (
+                        <p className="mt-6 text-zinc-500 dark:text-zinc-400">
+                            No comments yet.
+                        </p>
+                    ) : (
+                        <div className="mt-8 space-y-8">
+                            {post.comments.map((comment) => (
+                                <div key={comment.id} className="flex gap-4">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-200 text-sm font-medium dark:bg-zinc-700">
+                                        {comment.user?.name?.charAt(0) ?? '?'}
                                     </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-medium">
+                                                {comment.user?.name ?? 'Anonymous'}
+                                            </span>
+                                            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                                                {new Date(comment.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <p className="mt-1 text-zinc-700 dark:text-zinc-300">
+                                            {comment.body}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+
+                {/* Back link */}
+                <div className="mt-16">
+                    <Link
+                        href="/posts"
+                        className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                    >
+                        ← Back to articles
+                    </Link>
                 </div>
-            </div>
-        </>
+            </article>
+        </BlogLayout>
     );
 }
