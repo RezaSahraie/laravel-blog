@@ -19,6 +19,7 @@ class BlogSeeder extends Seeder
         $user = User::first() ?? User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
+            'password' => '12345678'
         ]);
 
         // Create categories
