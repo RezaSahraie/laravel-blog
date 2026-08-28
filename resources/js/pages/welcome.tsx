@@ -1,6 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { dashboard, login } from '@/routes';
 import { register } from '@/routes';
+import { index as postsIndex } from '@/routes/posts';
 
 export default function Welcome() {
     const { auth } = usePage().props;
@@ -20,6 +21,12 @@ export default function Welcome() {
                             </Link>
                         ) : (
                             <>
+                                <Link
+                                    href={postsIndex()}
+                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                                >
+                                    Blog
+                                </Link>
                                 <Link
                                     href={login()}
                                     className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
