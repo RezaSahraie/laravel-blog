@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import BlogLayout from '@/layouts/BlogLayout';
+import { show as postsShow } from '@/routes/posts';
 
 interface User {
     id: number;
@@ -92,7 +93,7 @@ export default function Index({ posts }: Props) {
 
                                     {/* Title */}
                                     <h2 className="text-xl leading-snug font-semibold tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                                        <Link href={`/posts/${post.slug}`}>
+                                        <Link href={postsShow(post.slug)}>
                                             {post.title}
                                         </Link>
                                     </h2>
@@ -107,8 +108,7 @@ export default function Index({ posts }: Props) {
                                         <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                             {post.user.name}
                                         </span>
-                                        <Link
-                                            href={`/posts/${post.slug}`}
+                                        <Link href={postsShow(post.slug)}
                                             className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
                                         >
                                             Read →

@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import BlogLayout from '@/layouts/BlogLayout';
+import { index as postsIndex } from '@/routes/posts';
 
 interface Props {
     post: {
@@ -30,7 +31,7 @@ export default function Show({ post }: Props) {
                 {/* Meta */}
                 <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
                     <Link
-                        href="/posts"
+                        href={postsIndex()}
                         className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 transition hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                     >
                         {post.category.name}
@@ -127,7 +128,7 @@ export default function Show({ post }: Props) {
                 {/* Back link */}
                 <div className="mt-16">
                     <Link
-                        href="/posts"
+                        href={postsIndex()}
                         className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
                     >
                         ← Back to articles
