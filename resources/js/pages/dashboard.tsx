@@ -1,25 +1,39 @@
-import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { Head, Link } from '@inertiajs/react';
 import { dashboard } from '@/routes';
 
 export default function Dashboard() {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                <div>
+                    <h1 className="text-2xl font-bold">Dashboard</h1>
+                    <p className="mt-1 text-zinc-600 dark:text-zinc-400">
+                        Manage your blog content
+                    </p>
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <Link
+                        href="/dashboard/posts"
+                        className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-zinc-300 hover:shadow dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                    >
+                        <h2 className="text-lg font-semibold">My Posts</h2>
+                        <p className="mt-2 text-sm text-zinc-500">
+                            Create, edit and delete your blog posts
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/posts"
+                        className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-zinc-300 hover:shadow dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                    >
+                        <h2 className="text-lg font-semibold">View Blog</h2>
+                        <p className="mt-2 text-sm text-zinc-500">
+                            See the public blog page
+                        </p>
+                    </Link>
                 </div>
             </div>
         </>
