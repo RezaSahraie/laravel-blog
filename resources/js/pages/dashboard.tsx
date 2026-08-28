@@ -1,50 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
-import { dashboard } from '@/routes';
+import AppLayout from '@/layouts/app-layout';
 
 export default function Dashboard() {
-    return (
-        <>
-            <Head title="Dashboard" />
-
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <div>
-                    <h1 className="text-2xl font-bold">Dashboard</h1>
-                    <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-                        Manage your blog content
-                    </p>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <Link
-                        href="/dashboard/posts"
-                        className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-zinc-300 hover:shadow dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
-                    >
-                        <h2 className="text-lg font-semibold">My Posts</h2>
-                        <p className="mt-2 text-sm text-zinc-500">
-                            Create, edit and delete your blog posts
-                        </p>
-                    </Link>
-
-                    <Link
-                        href="/posts"
-                        className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-zinc-300 hover:shadow dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
-                    >
-                        <h2 className="text-lg font-semibold">View Blog</h2>
-                        <p className="mt-2 text-sm text-zinc-500">
-                            See the public blog page
-                        </p>
-                    </Link>
-                </div>
-            </div>
-        </>
-    );
+    return <AppLayout breadcrumbs={[{title:'Overview',href:'/dashboard'}]}><Head title="Overview"/><div className="min-h-full bg-slate-50/70 p-5 dark:bg-slate-950 sm:p-8"><div className="mx-auto max-w-6xl space-y-8">
+        <div className="rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 p-7 text-white shadow-xl sm:p-10"><p className="text-xs font-black uppercase tracking-[.2em] text-cyan-300">Creator workspace</p><h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Your publishing studio.</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Write, organize, and publish ideas without getting buried in a complicated CMS.</p><div className="mt-7 flex flex-wrap gap-3"><Link href="/dashboard/posts/create" className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5">Create a post</Link><Link href="/posts" className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-bold text-white">Preview blog</Link></div></div>
+        <div className="grid gap-5 md:grid-cols-2"><Link href="/dashboard/posts" className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/[.04]"><span className="text-xs font-black uppercase tracking-widest text-cyan-600">Publishing</span><h2 className="mt-3 text-2xl font-black">Manage posts</h2><p className="mt-2 text-sm leading-6 text-slate-500">Create drafts, publish articles, edit existing content, and keep your library organized.</p><span className="mt-6 inline-block text-sm font-bold text-cyan-600 transition group-hover:translate-x-1">Open posts →</span></Link><Link href="/dashboard/categories" className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/[.04]"><span className="text-xs font-black uppercase tracking-widest text-violet-600">Structure</span><h2 className="mt-3 text-2xl font-black">Manage categories</h2><p className="mt-2 text-sm leading-6 text-slate-500">Build meaningful topic collections so readers can discover exactly what interests them.</p><span className="mt-6 inline-block text-sm font-bold text-violet-600 transition group-hover:translate-x-1">Open categories →</span></Link></div>
+    </div></div></AppLayout>;
 }
-
-Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
-};
