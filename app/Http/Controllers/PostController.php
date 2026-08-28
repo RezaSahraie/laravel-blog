@@ -127,6 +127,12 @@ class PostController extends Controller
             'published_at' => ($validated['is_published'] ?? false) ? now() : null,
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('covers', 'public');
+            $post->update(['cover_image' => $path]);
+        }
+
         return redirect()
             ->route('posts.admin')
             ->with('success', 'Post created successfully.');
@@ -175,6 +181,12 @@ class PostController extends Controller
             // Preserve existing published_at if already published, otherwise set to now
             'published_at' => ($validated['is_published'] ?? false) ? ($post->published_at ?? now()) : null,
         ]);
+
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('covers', 'public');
+            $post->update(['cover_image' => $path]);
+        }
+
 
         return redirect()
             ->route('posts.admin')
