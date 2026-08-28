@@ -4,17 +4,6 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import type { AppLayoutProps } from '@/types';
 
-export default function AppSidebarLayout({
-    children,
-    breadcrumbs = [],
-}: AppLayoutProps) {
-    return (
-        <AppShell variant="sidebar">
-            <AppSidebar />
-            <AppContent variant="sidebar" className="min-w-0 overflow-x-clip">
-                <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                {children}
-            </AppContent>
-        </AppShell>
-    );
+export default function AppSidebarLayout({ children, breadcrumbs = [] }: AppLayoutProps) {
+    return <AppShell variant="sidebar" className="bg-[#f7f8fc] dark:bg-[#070b14]"><AppSidebar/><AppContent variant="sidebar" className="min-w-0 overflow-x-clip bg-transparent"><AppSidebarHeader breadcrumbs={breadcrumbs}/>{children}</AppContent></AppShell>;
 }
