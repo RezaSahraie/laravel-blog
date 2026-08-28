@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\StoreCommentRequest;
 
 class PostController extends Controller
 {
@@ -107,16 +110,9 @@ class PostController extends Controller
      * @param Request $request The HTTP request containing post data
      * @return RedirectResponse Redirect to admin index with success message
      */
-    public function store(Request $request): RedirectResponse {
+    public function store(StorePostRequest $request): RedirectResponse {
         // Validate all incoming request data
-        $validated = $request->validate([
-            'title' => ['required','string', 'max:255'],
-            'excerpt' => ['required', 'string', 'max:500'],
-            'content' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'cover_image' => ['nullable', 'string', 'max:255'],
-            'is_published' => ['boolean'],
-        ]);
+        $validated = $request->validated();
 
         // Create the new post with validated data
         $post = Post::create([
@@ -163,20 +159,10 @@ class PostController extends Controller
      * @param Post $post The post model instance to update (route model binding)
      * @return RedirectResponse Redirect to admin index with success message
      */
-    public function update(Request $request, Post $post): RedirectResponse {
-        // Authorization check: ensure the authenticated user owns this post
-        if ($post->user_id !== Auth::id()) {
-            abort(403);     // Forbidden - user doesn't own this post
-        }
+    public function update(UpdatePostRequest $request, Post $post): RedirectResponse {
+        
         // Validate all incoming request data (same rules as store)
-        $validated = $request->validate([
-            'title' => ['required','string', 'max:255'],
-            'excerpt' => ['required', 'string', 'max:500'],
-            'content' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'cover_image' => ['nullable', 'string', 'max:255'],
-            'is_published' => ['boolean'],
-        ]);
+        $validated = $request->validated();     // Ownership is already checked in UpdatePostRequest::authorize()
 
         // Update the post with validated data
         $post->update([
@@ -214,21 +200,19 @@ class PostController extends Controller
             ->with('success', 'Post deleted successfully.');
     }
 
-    public function storeComment(Request $request, Post $post): RedirectResponse {
+    public function storeComment(StoreCommentRequest $request, Post $post): RedirectResponse {
         if (! $post->is_published) {
             abort(404);
         }
 
-        $validated = $request->validate([
-            'body' => ['required', 'string', 'min:3', 'max:1000'],
-        ]);
+        $validated = $request->validated();
 
         $post->comments()->create([
             'user_id' => $request->user()?->id,
             'body' => $validated['body'],
             'is_approved' => true,
         ]);
-        
+
         return redirect()
         ->route('posts.show', $post)
         ->with('success', 'Comment added.');
