@@ -213,4 +213,24 @@ class PostController extends Controller
             ->route('posts.admin')
             ->with('success', 'Post deleted successfully.');
     }
+
+    public function storeComment(Request $request, Post $post): RedirectResponse {
+        if (! $post->is_published) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'min:3', 'max:1000'],
+        ]);
+
+        $post->comments()->create([
+            'user_id' => $request->user()?->id,
+            'body' => $validated['body'],
+            'is_approved' => true,
+        ]);
+        
+        return redirect()
+        ->route('posts.show', $post)
+        ->with('success', 'Comment added.');
+    }
 }

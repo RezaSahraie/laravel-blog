@@ -1,6 +1,7 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import BlogLayout from '@/layouts/BlogLayout';
 import { index as postsIndex } from '@/routes/posts';
+import { FormEvent } from 'react';
 
 interface Props {
     post: {
@@ -23,6 +24,18 @@ interface Props {
 }
 
 export default function Show({ post }: Props) {
+    const { auth } = usePage().props as any;
+
+    const { data, setData, post: submit, processing, errors, reset } = useForm({
+        body: '',
+    });
+
+    const submitComment = (e: FormEvent) => {
+        e.preventDefault();
+        submit(`/posts/${post.slug}/comments`, {
+            onSuccess: () => reset('body'),
+        });
+    };
     return (
         <BlogLayout>
             <Head title={post.title} />
@@ -92,6 +105,37 @@ export default function Show({ post }: Props) {
                         Comments ({post.comments.length})
                     </h2>
 
+                    {/* Comment form */}
+                    {auth?.user ? (
+                        <form onSubmit={submitComment} className="mt-6 space-y-3">
+                            <textarea
+                                value={data.body}
+                                onChange={(e) => setData('body', e.target.value)}
+                                rows={3}
+                                placeholder="Write a comment..."
+                                className="w-full rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+                            />
+                            {errors.body && (
+                                <p className="text-sm text-red-600">{errors.body}</p>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="rounded-lg bg-zinc-900 px-4 py-2 text-sm text-white disabled:opacity-50 dark:bg-white dark:text-zinc-900"
+                            >
+                                {processing ? 'Posting...' : 'Post comment'}
+                            </button>
+                        </form>
+                    ) : (
+                        <p className="mt-4 text-sm text-zinc-500">
+                            <Link href="/login" className="text-blue-600 hover:underline">
+                                Log in
+                            </Link>{' '}
+                            to leave a comment.
+                        </p>
+                    )}
+
+                    {/* Comments list */}
                     {post.comments.length === 0 ? (
                         <p className="mt-6 text-zinc-500 dark:text-zinc-400">
                             No comments yet.
@@ -106,13 +150,10 @@ export default function Show({ post }: Props) {
                                     <div>
                                         <div className="flex items-center gap-2">
                                             <span className="font-medium">
-                                                {comment.user?.name ??
-                                                    'Anonymous'}
+                                                {comment.user?.name ?? 'Anonymous'}
                                             </span>
                                             <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                                                {new Date(
-                                                    comment.created_at,
-                                                ).toLocaleDateString()}
+                                                {new Date(comment.created_at).toLocaleDateString()}
                                             </span>
                                         </div>
                                         <p className="mt-1 text-zinc-700 dark:text-zinc-300">

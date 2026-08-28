@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/dashboard/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/dashboard/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    Route::post('/posts/{post:slug}/comments', [PostController::class, 'storeComment'])->name('posts.comments.store');
 });
 
 require __DIR__.'/settings.php';
