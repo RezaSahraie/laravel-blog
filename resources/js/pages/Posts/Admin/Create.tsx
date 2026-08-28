@@ -28,6 +28,7 @@ export default function Create({ categories }: Props) {
     return (
         <div className="mx-auto max-w-2xl px-6 py-12">
             <Head title="New Post" />
+
             <h1 className="mb-8 text-2xl font-bold">New Post</h1>
 
             <form onSubmit={submit} className="space-y-5">
@@ -77,36 +78,41 @@ export default function Create({ categories }: Props) {
                             </option>
                         ))}
                     </select>
-                    {errors.category_id && (
-                        <p className="mt-1 text-sm text-red-600">{errors.category_id}</p>
-                    )}
                 </div>
 
                 <div>
-                    <label className="mb-1 block text-sm font-medium">Cover image URL (optional)</label>
+                    <label className="mb-1 block text-sm font-medium">Cover Image</label>
                     <input
-                        type="text"
-                        value={data.cover_image}
-                        onChange={(e) => setData('cover_image', e.target.value)}
-                        className="w-full rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                                setData('cover_image' as any, e.target.files[0]);
+                            }
+                        }}
+                        className="block w-full text-sm text-zinc-500 file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-900 file:px-4 file:py-2 file:text-white hover:file:bg-zinc-800 dark:file:bg-white dark:file:text-zinc-900"
                     />
                 </div>
 
-                <label className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-2">
                     <input
                         type="checkbox"
+                        id="is_published"
                         checked={data.is_published}
                         onChange={(e) => setData('is_published', e.target.checked)}
+                        className="rounded border-zinc-300"
                     />
-                    Publish now
-                </label>
+                    <label htmlFor="is_published" className="text-sm">
+                        Publish immediately
+                    </label>
+                </div>
 
                 <button
                     type="submit"
                     disabled={processing}
-                    className="rounded-lg bg-zinc-900 px-5 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-zinc-900"
+                    className="w-full rounded-lg bg-zinc-900 px-5 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-zinc-900"
                 >
-                    {processing ? 'Saving...' : 'Create Post'}
+                    {processing ? 'Creating...' : 'Create Post'}
                 </button>
             </form>
         </div>
