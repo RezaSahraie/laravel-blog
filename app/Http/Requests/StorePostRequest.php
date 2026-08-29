@@ -28,7 +28,7 @@ class StorePostRequest extends FormRequest
             'excerpt' => ['required', 'string', 'max:500'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
-            'cover_image' => ['nullable', 'string', 'max:255'],
+            'cover_image' => ['nullable', 'image', 'max:5120'],
             'is_published' => ['boolean'],
         ];
     }

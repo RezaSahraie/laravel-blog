@@ -1,9 +1,126 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ArrowUpRight, Feather, MessageCircle, Sparkles } from 'lucide-react';
 import { index as postsIndex } from '@/routes/posts';
 
+const pillars = [
+    {
+        icon: Feather,
+        title: 'Write anything worth reading',
+        body: 'Essays, tutorials, reviews, field notes. This is a blog, not a story machine \u2014 every post is whatever its writer needed it to be.',
+    },
+    {
+        icon: Sparkles,
+        title: 'Organized, never cluttered',
+        body: 'Topics keep the archive tidy so readers can follow exactly the threads they care about, nothing more.',
+    },
+    {
+        icon: MessageCircle,
+        title: 'Real conversation, not noise',
+        body: 'Comments are open to signed-in readers only \u2014 enough friction to keep the discussion worth having.',
+    },
+];
+
 export default function Welcome() {
-    return <><Head title="Readly — a place for useful ideas"/><div className="min-h-screen bg-[#f4f1ea] text-[#171714] selection:bg-[#d9ff52] selection:text-black">
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-7 sm:px-10"><Link href={postsIndex()} className="text-2xl font-black tracking-[-.08em]">READLY<span className="text-[#ff5a36]">/</span></Link><Link href={postsIndex()} className="rounded-full border-2 border-[#171714] px-5 py-2.5 text-xs font-black uppercase tracking-wider transition hover:bg-[#171714] hover:text-white">Enter the blog</Link></header>
-        <main className="mx-auto max-w-7xl px-6 pb-20 pt-20 sm:px-10 lg:pt-28"><div className="grid gap-14 lg:grid-cols-[1fr_360px]"><div><p className="text-xs font-black uppercase tracking-[.28em] text-[#ff5a36]">Independent publishing platform</p><h1 className="mt-6 max-w-5xl text-[4.3rem] font-black leading-[.86] tracking-[-.075em] sm:text-7xl lg:text-[7.4rem]">Things<br/><span className="relative inline-block">worth <i className="absolute -bottom-1 left-0 h-2 w-full -rotate-1 bg-[#d9ff52]"/></span><br/>knowing.</h1><p className="mt-10 max-w-xl text-lg font-medium leading-8 text-black/55">Articles about technology, development, design, career, tools, ideas and the messy bits between them. No artificial categories. No filler.</p><Link href={postsIndex()} className="mt-9 inline-flex rounded-full bg-[#171714] px-7 py-4 text-sm font-black text-white transition hover:-translate-y-1">Browse latest posts ↗</Link></div><aside className="self-end"><div className="rotate-2 rounded-[2rem] bg-[#6d5dfc] p-7 text-white shadow-[12px_14px_0_#171714]"><p className="text-xs font-black uppercase tracking-widest text-white/60">What you'll find</p><div className="mt-10 space-y-6">{['Build better software.','Understand the tools.','Question the obvious.','Keep learning.'].map((x,i)=><div key={x} className="flex gap-4 border-t border-white/15 pt-4"><span className="font-mono text-xs text-white/50">0{i+1}</span><p className="font-bold">{x}</p></div>)}</div></div></aside></div><div className="mt-24 border-y-2 border-[#171714] py-5"><div className="flex flex-wrap items-center justify-between gap-4 text-xs font-black uppercase tracking-wider"><span>Read. Learn. Build. Repeat.</span><span>Latest ideas →</span><span>For curious humans.</span></div></div></main><footer className="mx-auto max-w-7xl px-6 py-10 text-xs font-bold text-black/35 sm:px-10">READLY / A blog, not a template.</footer>
-    </div></>;
+    const { name, auth } = usePage().props as any;
+    const siteName = name ?? 'Inkwell';
+
+    return (
+        <>
+            <Head title={`${siteName} \u2014 a place for things worth writing down`} />
+            <div className="min-h-screen bg-background font-sans text-foreground antialiased">
+                <div className="relative overflow-hidden">
+                    <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_-10%,color-mix(in_oklab,var(--color-accent)_28%,transparent),transparent)]"
+                    />
+                    <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-7 sm:px-8">
+                        <span className="flex items-center gap-2.5">
+                            <span className="grid size-9 place-items-center rounded-full bg-primary font-display text-lg font-semibold text-primary-foreground">
+                                {siteName?.[0] ?? 'I'}
+                            </span>
+                            <span className="font-display text-xl font-semibold tracking-tight">{siteName}</span>
+                        </span>
+                        <div className="flex items-center gap-3">
+                            {auth?.user ? (
+                                <Link
+                                    href="/dashboard"
+                                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition hover:-translate-y-0.5"
+                                >
+                                    Go to studio
+                                </Link>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    className="rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition hover:border-primary hover:text-primary"
+                                >
+                                    Sign in
+                                </Link>
+                            )}
+                            <Link
+                                href={postsIndex()}
+                                className="rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:-translate-y-0.5"
+                            >
+                                Read the blog
+                            </Link>
+                        </div>
+                    </header>
+
+                    <main className="relative mx-auto max-w-6xl px-6 pb-24 pt-16 sm:px-8 lg:pt-24">
+                        <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-semibold tracking-wide text-primary uppercase">
+                            <Sparkles className="size-3.5" />
+                            An independent, no-noise publication
+                        </p>
+
+                        <h1 className="mt-8 max-w-3xl font-display text-6xl leading-[1.02] font-semibold tracking-tight sm:text-7xl">
+                            Things worth
+                            <br />
+                            writing down<span className="text-primary">.</span>
+                        </h1>
+
+                        <p className="mt-8 max-w-xl text-lg leading-8 text-muted-foreground">
+                            {siteName} is a small blog for essays, tutorials, opinions and honest notes.
+                            Not everything here is a story &mdash; some of it is just useful. Pull up a chair.
+                        </p>
+
+                        <div className="mt-10 flex flex-wrap items-center gap-4">
+                            <Link
+                                href={postsIndex()}
+                                className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:-translate-y-0.5"
+                            >
+                                Browse the archive
+                                <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </Link>
+                            {!auth?.user && (
+                                <Link
+                                    href="/register"
+                                    className="text-sm font-semibold text-foreground/70 underline decoration-border decoration-2 underline-offset-4 transition hover:text-primary hover:decoration-primary"
+                                >
+                                    Create an account to comment
+                                </Link>
+                            )}
+                        </div>
+
+                        <div className="mt-24 grid gap-6 border-t border-border pt-12 sm:grid-cols-3">
+                            {pillars.map((pillar) => {
+                                const Icon = pillar.icon;
+                                return (
+                                    <div key={pillar.title}>
+                                        <span className="grid size-11 place-items-center rounded-2xl bg-secondary text-primary">
+                                            <Icon className="size-5" />
+                                        </span>
+                                        <h2 className="mt-5 font-display text-lg font-semibold">{pillar.title}</h2>
+                                        <p className="mt-2 text-sm leading-6 text-muted-foreground">{pillar.body}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </main>
+                </div>
+
+                <footer className="border-t border-border px-6 py-8 text-center text-xs text-muted-foreground sm:px-8">
+                    &copy; {new Date().getFullYear()} {siteName}. A blog, not a template.
+                </footer>
+            </div>
+        </>
+    );
 }

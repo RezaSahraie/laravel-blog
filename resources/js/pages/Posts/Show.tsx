@@ -1,7 +1,132 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { FormEvent } from 'react';
 import BlogLayout from '@/layouts/BlogLayout';
 import { index as postsIndex } from '@/routes/posts';
-import { FormEvent } from 'react';
-interface Comment{id:number;body:string;created_at:string;user:{name:string}|null}
-interface Props{post:{title:string;slug:string;excerpt:string;content:string;cover_image:string|null;published_at:string|null;user:{name:string};category:{name:string};comments:Comment[]}}
-export default function Show({post}:Props){const {auth}=usePage().props as any;const {data,setData,post:send,processing,errors,reset}=useForm({body:''});const submit=(e:FormEvent)=>{e.preventDefault();send(`/posts/${post.slug}/comments`,{onSuccess:()=>reset()});};return <BlogLayout><Head title={post.title}/><article className="mx-auto max-w-4xl px-6 py-14 sm:px-10 sm:py-20"><Link href={postsIndex()} className="text-xs font-black uppercase tracking-wider text-[#6d5dfc]">← Back to posts</Link><div className="mt-10 flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-wider"><span className="rounded-full bg-[#d9ff52] px-3 py-1.5">{post.category.name}</span><span className="text-black/35">{post.published_at?new Date(post.published_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'Draft'}</span></div><h1 className="mt-6 text-5xl font-black leading-[.95] tracking-[-.06em] sm:text-7xl">{post.title}</h1><p className="mt-7 text-xl font-medium leading-8 text-black/55">{post.excerpt}</p><div className="mt-8 flex items-center gap-3 border-b-2 border-[#171714] pb-8"><div className="grid h-10 w-10 place-items-center rounded-full bg-[#6d5dfc] text-sm font-black text-white">{post.user.name[0]}</div><span className="text-sm font-bold">{post.user.name}</span></div>{post.cover_image&&<img src={post.cover_image} alt="" className="mt-10 w-full rounded-[2rem]"/>}<div className="prose prose-lg prose-slate mt-12 max-w-none leading-8 prose-headings:font-black prose-a:text-[#6d5dfc]" dangerouslySetInnerHTML={{__html:post.content}}/><section className="mt-20 border-t-2 border-[#171714] pt-10"><h2 className="text-3xl font-black">Comments <span className="text-black/25">{post.comments.length}</span></h2>{auth?.user?<form onSubmit={submit} className="mt-6"><textarea value={data.body} onChange={e=>setData('body',e.target.value)} rows={4} placeholder="Add something thoughtful..." className="w-full rounded-2xl border-2 border-[#171714] bg-transparent px-4 py-4 text-sm outline-none focus:ring-4 focus:ring-[#d9ff52]"/>{errors.body&&<p className="mt-2 text-sm text-red-500">{errors.body}</p>}<button disabled={processing} className="mt-3 rounded-full bg-[#171714] px-6 py-3 text-xs font-black uppercase text-white">{processing?'Posting...':'Post comment'}</button></form>:<div className="mt-6 rounded-2xl bg-[#d9ff52] p-5 text-sm font-bold">Want to join the conversation? <Link href="/login" className="underline underline-offset-4">Sign in to comment.</Link></div>}<div className="mt-8 space-y-6">{post.comments.map(c=><div key={c.id} className="border-b border-black/10 pb-6"><div className="flex items-center justify-between"><span className="text-sm font-black">{c.user?.name??'Reader'}</span><span className="text-xs text-black/35">{new Date(c.created_at).toLocaleDateString()}</span></div><p className="mt-2 text-sm leading-6 text-black/60">{c.body}</p></div>)}</div></section></article></BlogLayout>}
+
+interface Comment {
+    id: number;
+    body: string;
+    created_at: string;
+    user: { name: string } | null;
+}
+
+interface Props {
+    post: {
+        title: string;
+        slug: string;
+        excerpt: string;
+        content: string;
+        cover_image_url: string | null;
+        published_at: string | null;
+        user: { name: string };
+        category: { name: string };
+        comments: Comment[];
+    };
+}
+
+function formatDate(value: string | null, options: Intl.DateTimeFormatOptions) {
+    if (!value) return 'Draft';
+    return new Date(value).toLocaleDateString('en-US', options);
+}
+
+export default function Show({ post }: Props) {
+    const { auth } = usePage().props as any;
+    const { data, setData, post: send, processing, errors, reset } = useForm({ body: '' });
+
+    const submit = (e: FormEvent) => {
+        e.preventDefault();
+        send(`/posts/${post.slug}/comments`, { onSuccess: () => reset() });
+    };
+
+    return (
+        <BlogLayout>
+            <Head title={post.title} />
+
+            <div className="border-b border-border bg-secondary/40">
+                <article className="mx-auto max-w-3xl px-6 py-14 sm:px-8 sm:py-20">
+                    <Link
+                        href={postsIndex()}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide text-primary uppercase"
+                    >
+                        <ArrowLeft className="size-3.5" />
+                        Back to stories
+                    </Link>
+
+                    <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold tracking-wide uppercase">
+                        <span className="rounded-full bg-accent/25 px-3 py-1.5 text-accent-foreground">{post.category.name}</span>
+                        <span className="text-muted-foreground">
+                            {formatDate(post.published_at, { month: 'long', day: 'numeric', year: 'numeric' })}
+                        </span>
+                    </div>
+
+                    <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold tracking-tight sm:text-6xl">{post.title}</h1>
+                    <p className="mt-6 text-xl leading-8 text-muted-foreground">{post.excerpt}</p>
+
+                    <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
+                        <div className="grid size-10 place-items-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground">
+                            {post.user.name[0]}
+                        </div>
+                        <span className="text-sm font-semibold">{post.user.name}</span>
+                    </div>
+                </article>
+            </div>
+
+            <article className="mx-auto max-w-3xl px-6 py-14 sm:px-8">
+                {post.cover_image_url && (
+                    <img src={post.cover_image_url} alt="" className="-mt-24 w-full rounded-3xl border border-border shadow-lg sm:-mt-28" />
+                )}
+
+                <div
+                    className="prose prose-lg mt-8 max-w-none leading-8 text-foreground prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl prose-strong:text-foreground"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                />
+
+                <section className="mt-20 border-t border-border pt-10">
+                    <h2 className="flex items-center gap-2 font-display text-2xl font-semibold">
+                        <MessageCircle className="size-5 text-primary" />
+                        Comments <span className="text-muted-foreground">{post.comments.length}</span>
+                    </h2>
+
+                    {auth?.user ? (
+                        <form onSubmit={submit} className="mt-6">
+                            <textarea
+                                value={data.body}
+                                onChange={(e) => setData('body', e.target.value)}
+                                rows={4}
+                                placeholder="Add something thoughtful..."
+                                className="w-full rounded-2xl border border-border bg-card px-4 py-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+                            />
+                            {errors.body && <p className="mt-2 text-sm text-destructive">{errors.body}</p>}
+                            <button
+                                disabled={processing}
+                                className="mt-3 rounded-full bg-primary px-6 py-3 text-xs font-semibold tracking-wide text-primary-foreground uppercase transition hover:-translate-y-0.5 disabled:opacity-50"
+                            >
+                                {processing ? 'Posting...' : 'Post comment'}
+                            </button>
+                        </form>
+                    ) : (
+                        <div className="mt-6 rounded-2xl border border-border bg-secondary/50 p-5 text-sm font-medium">
+                            Want to join the conversation?{' '}
+                            <Link href="/login" className="font-semibold text-primary underline underline-offset-4">
+                                Sign in to comment.
+                            </Link>
+                        </div>
+                    )}
+
+                    <div className="mt-8 space-y-6">
+                        {post.comments.map((c) => (
+                            <div key={c.id} className="border-b border-border pb-6">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm font-semibold">{c.user?.name ?? 'Reader'}</span>
+                                    <span className="text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <p className="mt-2 text-sm leading-6 text-muted-foreground">{c.body}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </article>
+        </BlogLayout>
+    );
+}

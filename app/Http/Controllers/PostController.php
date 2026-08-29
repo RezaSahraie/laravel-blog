@@ -122,7 +122,6 @@ class PostController extends Controller
             'slug' => Str::slug($validated['title']).'-'.Str::random(5),
             'excerpt' => $validated['excerpt'],
             'content' => $validated['content'],
-            'cover_image' => $validated['cover_image'] ?? null,
             'is_published' => $validated['is_published'] ?? false,
             'published_at' => ($validated['is_published'] ?? false) ? now() : null,
         ]);
@@ -176,7 +175,6 @@ class PostController extends Controller
             'title' => $validated['title'],
             'excerpt' => $validated['excerpt'],
             'content' => $validated['content'],
-            'cover_image' => $validated['cover_image'] ?? null,
             'is_published' => $validated['is_published'] ?? false,
             // Preserve existing published_at if already published, otherwise set to now
             'published_at' => ($validated['is_published'] ?? false) ? ($post->published_at ?? now()) : null,

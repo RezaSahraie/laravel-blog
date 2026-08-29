@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -33,6 +35,26 @@ class Post extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    /**
+     * Extra attributes appended to the model's array/JSON form,
+     * so the frontend always receives a ready-to-use image URL.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'cover_image_url',
+    ];
+
+    /**
+     * Resolve the stored cover image path into a full public URL.
+     */
+    protected function coverImageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->cover_image ? Storage::disk('public')->url($this->cover_image) : null,
+        );
+    }
 
     /**
      * Get the user that owns the post.
