@@ -1,65 +1,118 @@
 <div align="center">
 
-# READLY/ 🗞️
+# READLY/
 
-### Read. Learn. Build. Repeat.
+### A focused publishing project built with Laravel, Inertia and React.
 
-A modern Laravel + React publishing platform with a clean public reading experience and a separate private Studio.
-
-[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
-[![Inertia](https://img.shields.io/badge/Inertia.js-2.0-9553E9?style=for-the-badge)](https://inertiajs.com)
-
-<br/>
-
-[🇮🇷 فارسی — راهنما کامل](README.fa.md) &nbsp;·&nbsp; [🇺🇸 English — Full Guide](README.en.md)
+<p>
+  <a href="README.fa.md">🇮🇷 فارسی</a>
+  &nbsp;•&nbsp;
+  <a href="README.en.md">🇬🇧 English</a>
+</p>
 
 </div>
 
 ---
 
-## Pick your language
+## Preview
 
-| | README |
+<p align="center">
+  <img src="docs/screenshots/Screenshot%202026-08-29%20131927.png" alt="READLY public blog preview" width="49%" />
+  <img src="docs/screenshots/Screenshot%202026-08-29%20135038.png" alt="READLY dashboard preview" width="49%" />
+</p>
+
+> The screenshots above are from this repository's own project.
+
+---
+
+## What is READLY?
+
+READLY is a blog application with a **public reading area** and a separate authenticated **dashboard** for managing content.
+
+### Public area
+
+- Browse published posts
+- Open and read individual posts
+- View comments
+- Sign in when interaction requires an authenticated account
+
+### Dashboard
+
+- Manage posts
+- Manage categories
+
+---
+
+## Project stack
+
+- Laravel 13
+- React + TypeScript
+- Inertia.js
+- Tailwind CSS
+- Docker + Laravel Sail
+- MySQL 8.4
+- Redis
+- Mailpit
+- Vite
+
+The exact Docker services are defined in `compose.yaml`.
+
+---
+
+## Choose your language
+
+| Language | README |
 |---|---|
-| 🇮🇷 | **[فارسی](README.fa.md)** — معرفی پروژه، راه‌اندازی، Docker/Sail و دستورات کاربردی |
-| 🇺🇸 | **[English](README.en.md)** — Project overview, setup and complete Docker/Sail guide |
+| 🇮🇷 فارسی | [راهنمای فارسی](README.fa.md) |
+| 🇬🇧 English | [English documentation](README.en.md) |
 
-## ⚡ The short version
+---
 
-READLY keeps two worlds separate:
-
-```text
-PUBLIC  → Read posts. Discover ideas. Comment after signing in.
-STUDIO  → Create posts. Manage categories. Publish.
-```
-
-### Quick Docker start
+## Docker quick start
 
 ```bash
 git clone https://github.com/RezaSahraie/laravel-blog.git
 cd laravel-blog
+```
+
+Create your environment file:
+
+```bash
 cp .env.example .env
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Start the containers:
+
+```bash
 ./vendor/bin/sail up -d
+```
+
+Then generate the application key and run migrations:
+
+```bash
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate
+```
+
+For frontend development:
+
+```bash
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
 ```
 
-Then open:
-
-```text
-http://localhost
-```
-
-> 📚 For the full walkthrough, configuration details and troubleshooting, choose your language above.
+For the complete setup and day-to-day commands, use the language-specific README above.
 
 ---
 
 <div align="center">
 
-**Not a starter screen. A place for ideas.**
+**READLY/ — built to write, organize and read.**
 
 </div>
