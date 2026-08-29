@@ -126,9 +126,11 @@ The design lives almost entirely behind a handful of CSS variables, so restyling
 whole app doesn't mean touching every page:
 
 - **Colors & radius** — `resources/css/app.css`, inside `:root` and `.dark`. Every
-  component (public site and admin studio alike) reads from these tokens.
-- **Fonts** — the Fraunces / Manrope pairing is loaded in `resources/views/app.blade.php`
-  and referenced as `--font-display` / `--font-sans` in `resources/css/app.css`.
+  component (public site and admin studio alike) reads from these tokens. The default
+  palette is a clean indigo/violet "tech" theme.
+- **Fonts** — the Space Grotesk / Inter pairing is loaded in
+  `resources/views/app.blade.php` and referenced as `--font-display` / `--font-sans` in
+  `resources/css/app.css`.
 - **Site name** — set `APP_NAME` in your `.env`; it's shared into every page as `name`
   and shown in the header, footer, and auth screens automatically.
 - **Layouts** — `resources/js/layouts/BlogLayout.tsx` (public site chrome) and

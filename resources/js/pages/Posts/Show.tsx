@@ -54,7 +54,7 @@ export default function Show({ post }: Props) {
                     </Link>
 
                     <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold tracking-wide uppercase">
-                        <span className="rounded-full bg-accent/25 px-3 py-1.5 text-accent-foreground">{post.category.name}</span>
+                        <span className="rounded-full bg-accent/10 px-3 py-1.5 text-accent">{post.category.name}</span>
                         <span className="text-muted-foreground">
                             {formatDate(post.published_at, { month: 'long', day: 'numeric', year: 'numeric' })}
                         </span>

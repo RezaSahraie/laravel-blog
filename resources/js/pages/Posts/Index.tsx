@@ -83,7 +83,7 @@ export default function Index({ posts }: Props) {
                                 </div>
                                 <div className="flex flex-col justify-center p-8 sm:p-10">
                                     <div className="flex items-center gap-3 text-xs font-semibold tracking-wide uppercase">
-                                        <span className="rounded-full bg-accent/25 px-3 py-1 text-accent-foreground">{featured.category.name}</span>
+                                        <span className="rounded-full bg-accent/10 px-3 py-1 text-accent">{featured.category.name}</span>
                                         <span className="text-muted-foreground">{formatDate(featured.published_at)}</span>
                                     </div>
                                     <h2 className="mt-5 font-display text-3xl leading-tight font-semibold tracking-tight transition group-hover:text-primary sm:text-4xl">

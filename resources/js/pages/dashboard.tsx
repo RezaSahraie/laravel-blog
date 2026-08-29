@@ -47,7 +47,7 @@ export default function Dashboard() {
                             href="/dashboard/categories"
                             className="group rounded-3xl border border-border bg-card p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                         >
-                            <span className="grid size-11 place-items-center rounded-2xl bg-accent/15 text-accent-foreground">
+                            <span className="grid size-11 place-items-center rounded-2xl bg-accent/10 text-accent">
                                 <Folder className="size-5" />
                             </span>
                             <h2 className="mt-4 font-display text-2xl font-semibold">Manage categories</h2>
